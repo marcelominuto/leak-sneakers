@@ -98,10 +98,6 @@ button:hover{
   background: #606064;
 }
 
-img{
-  height: 100%;
-}
-
 .webhook-form{
   align-items: center;
   justify-content: center;
@@ -175,11 +171,21 @@ img{
   align-items: center;
 }
 
-.store, .date{
+.store, .date, .description{
   display: flex;
   flex-direction: column;
   width: 70%;
   gap: .2rem;
+}
+
+.description textarea{
+  border: none;
+  border-radius: .8rem;
+  padding: .8rem;
+  background-color: #606064;
+  appearance: none;
+  color: white;
+  height: 10rem;
 }
 
 .copping{

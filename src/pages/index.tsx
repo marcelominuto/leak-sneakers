@@ -10,7 +10,13 @@ export default function Home() {
   const [searchText, setSearchText] = useState('')
   const [showNotFound, setShowNotFound] = useState(false)
   const [store, setStore] = useState('')
+  const [description, setDescription] = useState('')
   const [releaseDate, setReleaseDate] = useState('')
+  const [checked, setChecked] = useState(false);
+
+  const handleChange = () => {
+    setChecked(!checked);
+  };
   
   async function fetchProducts(url: string){
     const response = await fetch(url)
@@ -47,7 +53,9 @@ export default function Home() {
       sku: selectedProduct!.data.sku,
       image_url: selectedProduct!.data.image_url,
       store,
-      releaseDate
+      releaseDate,
+      checked: checked.toString(),
+      description
     }
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/webhooks`, {
@@ -81,8 +89,8 @@ export default function Home() {
     <>
       <div className="wrapper">
         <div className="header">
-          <i id="logo" className="fa-sharp fa-solid fa-user-secret"></i>
-          <h1>LEAK SNEAKERS</h1>
+          <i id="logo" className="fa-sharp fa-solid fa-user-secret" style={!!selectedProduct ? {fontSize: '5rem'} : {fontSize: '7rem'}}></i>
+          <h1 style={!!selectedProduct ? {display: 'none'} : {display: 'flex'}}>LEAK SNEAKERS</h1>
           <form className="search-form" onSubmit={searchProducts} style={!!selectedProduct ? {display: 'none'} : {display: 'flex'}}>
             <div className="input-container">
               <label htmlFor="search">SKU</label>
@@ -122,7 +130,7 @@ export default function Home() {
           <div className="leakInput">
             <div className="copping">
               <label htmlFor="copping-input">Copping</label>
-              <input id="copping-input" type="checkbox" />
+              <input id="copping-input" type="checkbox" checked={checked} onChange={handleChange}/>
             </div>
             <div className="store">
               <label htmlFor="store-input">Loja</label>
@@ -135,9 +143,16 @@ export default function Home() {
               <label htmlFor="release-date-input">Data de Lançamento</label>
               <input value={releaseDate}
                 onChange={e => setReleaseDate(e.target.value)}
-                type="date" 
+                type="text" 
                 name="release-date-input" 
                 id="release-date-input" />
+            </div>
+            <div className="description" style={!!checked ? {display: 'flex'} : {display: 'none'}}>
+              <label htmlFor="description-input">Descrição</label>
+              <textarea value={description}
+                onChange={e => setDescription(e.target.value)}
+                id="description-input" 
+                 />
             </div>
             <div className="buttons">
               <button className="webform-btn" type="submit">Registrar</button>
