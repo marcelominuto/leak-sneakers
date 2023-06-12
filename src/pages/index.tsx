@@ -54,18 +54,29 @@ export default function Home() {
       image_url: selectedProduct!.data.image_url,
       store,
       releaseDate,
-      checked: checked.toString(),
       description
     }
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/webhooks`, {
+    const responsePrivate = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/webhooks/private`, {
       method: "POST", 
       headers: { "content-type": "application/json" }, 
       body: JSON.stringify(payload)
     })
 
-    const data = await response.json()
-    console.log(data)
+    const dataPrivate = await responsePrivate.json()
+    console.log(dataPrivate)
+
+    if(checked === true){
+      const responseCopping = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/webhooks/copping`, {
+        method: "POST", 
+        headers: { "content-type": "application/json" }, 
+        body: JSON.stringify(payload)
+      })
+
+      const dataCopping = await responseCopping.json()
+      console.log(dataCopping)
+    }
+
     setProducts([])
     setSelectedProduct(undefined)
 
